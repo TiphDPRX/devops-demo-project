@@ -3,10 +3,16 @@ pipeline {
   parameters {
     string(name: 'build_version', defaultValue: 'V1.0', description: 'Build version to use for Docker image')
   }
+
   stages {
+    stage('Clean workspace') {
+      steps {
+        deleteDir()
+      }
+    }
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/abdelbaki-bouzaienne/devops-demo-project.git'
+        git branch: 'main', url: 'https://github.com/TiphDPRX/devops-demo-project.git'
       }
     }
     stage('Build and Test') {
