@@ -4,6 +4,24 @@ pipeline {
     string(name: 'build_version', defaultValue: 'V1.0', description: 'Build version to use for Docker image')
   }
   stages {
+    stage('Clean + Fresh Checkout') {
+      steps {
+        deleteDir()   // supprime tout le workspace Jenkins
+    
+        checkout([
+          $class: 'GitSCM',
+          branches: [[name: '*/main']],
+          userRemoteConfigs: [[
+            url: 'https://github.com/TiphDPRX/devops-demo-project.git'
+          ]],
+          doGenerateSubmoduleConfigurations: false,
+          extensions: [
+            [$class: 'CleanBeforeCheckout'],
+            [$class: 'WipeWorkspace']
+          ]
+        ])
+      }
+    }
     stage('Checkout') {
       steps {
         git branch: 'main', url: 'https://github.com/TiphDPRX/devops-demo-project'
